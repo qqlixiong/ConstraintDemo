@@ -1,11 +1,12 @@
 package zr.com.constraintdemo;
 
+import android.os.MessageQueue;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener ,MessageQueue.IdleHandler{
 
     private Button mNormalButton, mConstraintSetButton, mGuidelineButton, mCustomViewButton,mOtherViewButton;
 
@@ -13,8 +14,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
-        setListener();
     }
 
     private void initView() {
@@ -56,5 +55,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 OtherActivity.launch(this);
                 break;
         }
+    }
+
+    @Override
+    public boolean queueIdle() {  //是在onResume()之后执行，优化了启动时间
+        initView();
+        setListener();
+        return false;
     }
 }
